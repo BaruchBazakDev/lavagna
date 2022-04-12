@@ -10,9 +10,7 @@ services:
       - ./backup:/var/lib/mysql
   backend:
     image: lavagna_stable:latest
-    container_name: lavagna
-    ports:
-      - "8081:8080"
+    container_name: backend
     links:
       - db
     environment:
@@ -21,6 +19,13 @@ services:
       DB_USER: root
       DB_PASS: root
       SPRING_PROFILE: prod
+  reverse_proxy:
+    build: ./nginx
+    container_name: r_proxy
+    ports:
+      - "80:80"
+    links:
+      - backend
 
 
 #  proxy:
