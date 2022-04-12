@@ -1,0 +1,2 @@
+FROM fit_lavagna
+CMD "bash"

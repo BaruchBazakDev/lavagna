@@ -1,0 +1,33 @@
+version: "3"
+services:
+  db:
+    image: mysql:5.7.37-oracle
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./data:/docker-entrypoint-initdb.d/:rw
+      - ./backup:/var/lib/mysql
+  backend:
+    image: lavagna_stable:latest
+    container_name: lavagna
+    ports:
+      - "8081:8080"
+    links:
+      - db
+    environment:
+      DB_DIALECT: MYSQL
+      DB_URL: jdbc:mysql://db:3306/lavagna
+      DB_USER: root
+      DB_PASS: root
+      SPRING_PROFILE: prod
+
+
+#  proxy:
+#    image: baruch_foodtruck
+      # context: foodtrucks/project/flask-app/.
+      # dockerfile: Dockerfile
+#    ports:
+#      - "80:80"
+ #   links:
+ #     - backend
