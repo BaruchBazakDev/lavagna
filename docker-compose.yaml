@@ -9,7 +9,7 @@ services:
       - ./data:/docker-entrypoint-initdb.d/:rw
       - ./backup:/var/lib/mysql
   backend:
-    image: lavagna_stable:latest
+    build: . #lavagna_stable:latest
     container_name: backend
     links:
       - db
@@ -18,7 +18,7 @@ services:
       DB_URL: jdbc:mysql://db:3306/lavagna
       DB_USER: root
       DB_PASS: root
-      SPRING_PROFILE: prod
+      SPRING_PROFILE: dev
   reverse_proxy:
     build: ./nginx
     container_name: r_proxy
@@ -26,12 +26,18 @@ services:
       - "80:80"
     links:
       - backend
-
+  doc:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    container_name: docamentaion
+    ports:
+      - "8081:8081"
 
 #  proxy:
 #    image: baruch_foodtruck
       # context: foodtrucks/project/flask-app/.
-      # dockerfile: Dockerfile
+      # dockerfile: Dockerfile.nginx
 #    ports:
 #      - "80:80"
  #   links:

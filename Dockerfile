@@ -8,3 +8,4 @@ FROM openjdk:8-jre-alpine
 COPY --from=build /app/target/ /app/
 COPY entrypoint.sh .
 ENTRYPOINT "sh" "entrypoint.sh"
+

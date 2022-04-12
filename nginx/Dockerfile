@@ -1,3 +1,5 @@
-FROM nginx:alpine
+FROM lavagna_stable:latest AS build
 
-COPY ./nginx.conf /etc/nginx/nginx.conf
+FROM nginx:alpine
+COPY --from=build /app/lavagna /usr/share/nginx/html/lavagna
+COPY configuration/nginx.conf /etc/nginx/nginx.conf
